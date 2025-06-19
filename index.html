@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eBook Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff4f0;
+    }
+    .navbar {
+      background-color: #ffccbc;
+    }
+    .nav-link, .navbar-brand {
+      color: #333;
+      font-weight: 500;
+    }
+    .nav-link:hover, .navbar-brand:hover {
+      color: #000;
+    }
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .product-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .cart-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      font-size: 12px;
+      padding: 2px 6px;
+    }
+    .icon-text {
+      display: inline-flex;
+      align-items: center;
+    }
+    .icon-text i {
+      margin-right: 6px;
+    }
+    .cart-icon-animate {
+      animation: bounce 0.5s;
+    }
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-book-open me-2"></i>My eBooks
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link icon-text" href="#ebooks">
+            <i class="fas fa-home"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link icon-text" href="#about">
+            <i class="fas fa-info-circle"></i> About
+          </a>
+        </li>
+        <li class="nav-item position-relative">
+          <a class="nav-link icon-text" href="#" id="cart-icon" data-bs-toggle="modal" data-bs-target="#cartModal">
+            <i class="fas fa-shopping-cart"></i> Cart
+            <span class="cart-badge" id="cart-count">0</span>
+          </a>
+        </li>
+   
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Product Section -->
+<section id="ebooks" class="container my-5">
+  <div class="row g-4" id="product-list">
+    <!-- eBook cards inserted by JavaScript -->
+  </div>
+</section>
+
+<!-- Cart Modal -->
+<!-- Cart Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-bottom-0" style="background-color: #ffccbc;">
+        <h5 class="modal-title fw-semibold">
+          <i class="fas fa-shopping-cart me-2"></i>Your Cart
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body px-4">
+        <ul class="list-group list-group-flush mb-3" id="cart-items">
+          <!-- Dynamic eBook list goes here -->
+        </ul>
+
+        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+          <span class="fw-bold fs-5">Total:</span>
+          <span class="fw-bold fs-5" id="cart-total">$0</span>
+        </div>
+      </div>
+
+      <div class="modal-footer border-top-0 px-4 pb-4">
+        <a href="payment.html"><button id="checkout-btn" class="btn w-100 fw-semibold text-dark" style="background-color: #ffccbc;">
+          Proceed to Checkout
+        </button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- sidebar modal -->
+
+<!-- Mobile Drawer Menu -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="mobileMenuLabel"><i class="fas fa-book-open me-2"></i>My eBooks</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="#ebooks"><i class="fas fa-home me-2"></i>Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="#about"><i class="fas fa-info-circle me-2"></i>About</a></li>
+      <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i class="fas fa-shopping-cart me-2"></i>Cart</a></li>
+
+      
+    </ul>
+  </div>
+</div>
+
+
+
+
+<!-- Bootstrap & JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const ebooks = Array.from({ length: 10 }, (_, i) => ({
+    id: i + 1,
+    title: `eBook Title ${i + 1}`,
+    price: 2,
+    img: `ebook${i + 1}.jpg`,
+    filename: `ebook${i + 1}.pdf` // 👈 add this
+  }));
+
+  const cart = [];
+
+  const productList = document.getElementById('product-list');
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const cartCount = document.getElementById('cart-count');
+  const cartIcon = document.getElementById('cart-icon');
+
+  function renderProducts() {
+    productList.innerHTML = ebooks.map(book => `
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="product-card">
+          <img src="${book.img}" alt="${book.title}" class="product-img">
+          <div class="p-3">
+            <h5>${book.title}</h5>
+            <p class="text-muted">Brief description of ${book.title}.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-bold">$${book.price}</span>
+              <button class="btn btn-sm btn-outline-primary" onclick="addToCart(${book.id})">
+                <i class="fas fa-cart-plus me-1"></i>Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function addToCart(id) {
+    const book = ebooks.find(b => b.id === id);
+    if (!cart.some(item => item.id === id)) {
+      cart.push(book);
+    }
+    updateCart();
+
+    cartIcon.classList.add('cart-icon-animate');
+    setTimeout(() => cartIcon.classList.remove('cart-icon-animate'), 500);
+  }
+
+  function removeFromCart(id) {
+    const index = cart.findIndex(item => item.id === id);
+    if (index > -1) {
+      cart.splice(index, 1);
+    }
+    updateCart();
+  }
+
+  function updateCart() {
+    cartCount.textContent = cart.length;
+    cartItems.innerHTML = cart.map(item => `
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          ${item.title}
+          <small class="text-muted d-block">$${item.price}</small>
+        </div>
+        <button class="btn btn-sm text-danger" onclick="removeFromCart(${item.id})" title="Remove from cart">
+  <i class="fas fa-trash-alt"></i>
+</button>
+
+      </li>
+    `).join('');
+
+    const total = cart.length === 10 ? 10 : cart.reduce((sum, item) => sum + item.price, 0);
+    cartTotal.textContent = `$${total}`;
+  }
+
+  renderProducts();
+  // Add event listener to checkout button
+  document.getElementById('checkout-btn').addEventListener('click', function () {
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    window.location.href = 'payment.html';
+  });
+</script>
+</body>
+</html>
