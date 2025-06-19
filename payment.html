@@ -31,13 +31,16 @@
 
 <div class="container checkout-container">
   <div class="row g-4">
-    <!-- Left: Email -->
+    <!-- Left: Instructions -->
     <div class="col-md-6">
       <div class="left-box">
-        <h5><i class="fas fa-envelope me-2"></i>Your Email</h5>
-        <p class="text-muted mb-3">Please enter your email address to receive the eBook download links after payment.</p>
-        <input type="email" class="form-control" id="emailInput" placeholder="you@example.com" required />
-        <div class="invalid-feedback">Please enter a valid email address.</div>
+        <h5><i class="fas fa-info-circle me-2"></i>Important Info</h5>
+        <p class="text-muted mb-0">
+          After your payment is successful, you will be redirected to a thank you page where you can instantly download all your purchased eBooks.
+        </p>
+        <p class="text-muted mt-3">
+          Please do not close the browser tab until you reach the download page.
+        </p>
       </div>
     </div>
 
@@ -63,7 +66,6 @@
   const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
   const cartList = document.getElementById('cart-summary');
   const totalEl = document.getElementById('summary-total');
-  const emailInput = document.getElementById('emailInput');
   let totalAmount = 0;
 
   // Render Cart
@@ -85,16 +87,11 @@
       color: 'gold',
       shape: 'rect',
       label: 'paypal',
-      height: 35 // smaller height
+      height: 35
     },
     onClick: () => {
-      const email = emailInput.value.trim();
-      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-        emailInput.classList.add('is-invalid');
-        return false;
-      }
-      emailInput.classList.remove('is-invalid');
-      sessionStorage.setItem('buyerEmail', email);
+      // Email skipped, but still storing a placeholder for flow consistency
+      sessionStorage.setItem('buyerEmail', 'no-email');
       return true;
     },
     createOrder: (data, actions) => {
@@ -110,13 +107,9 @@
         }
       });
     },
-
-
-
-
     onApprove: async (data, actions) => {
       const details = await actions.order.capture();
-      const email = sessionStorage.getItem('buyerEmail');
+      const email = sessionStorage.getItem('buyerEmail') || 'no-email';
       const paidCart = JSON.parse(sessionStorage.getItem('cart')) || [];
       sessionStorage.setItem('paidOrder', JSON.stringify({ email, cart: paidCart }));
       window.location.href = 'thankyou.html';
